@@ -1,0 +1,47 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* findArray(int* pref, int prefSize, int* returnSize){
+    int* ans = malloc(sizeof(int) * prefSize);
+    *returnSize = prefSize;
+    ans[0] = pref[0];
+    int temp = pref[0];
+
+     /* 
+     * Bit value of current XOR, the expected result, required bit value for changing the status 
+     *          1                       0                       1
+     *          1                       1                       0
+     *          0                       0                       0
+     *          0                       1                       1
+     */
+
+    for (int i = 1; i < prefSize; i++)
+    {
+        ans[i] = temp ^ pref[i];
+        temp ^= ans[i];
+    }
+    return ans;
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* findArray(int* pref, int prefSize, int* returnSize) {
+    // Brute force + Bit manipulation
+    // 1. pref[i] = arr[0] ^ ... ^ arr[i]
+    // 2. pref[i + 1] = (arr[0] ^ ... ^ arr[i]) ^ arr[i + 1] 
+    //                = pref[i] ^ arr[i + 1]
+    // 3. A ^ B = C, A ^ C = B
+    // 4. arr[i + 1] := pref[i] ^ pref[i + 1];
+
+    int* result = (int*)calloc(prefSize, sizeof(int));
+    *returnSize = prefSize;
+    result[0] = pref[0];
+    for (int i = 1; i < prefSize; ++i) 
+        result[i] = pref[i] ^ pref[i - 1];
+    return result;
+}
